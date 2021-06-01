@@ -1,6 +1,7 @@
 const express = require('express');
 const validate = require('express-validation');
 const depController = require('../controller/departments');
+const { authorize } = require('../middleware/authorization.middleware');
 const {
   postDepartmentBodySchema,
   editDepartmentBodySchema
@@ -9,16 +10,16 @@ const {
 const router = express.Router();
 
 // GET => /departments
-router.get('/', depController.getAllDepartments);
+router.get('/',authorize, depController.getAllDepartments);
 
 // GET => /departments/id
-router.get('/:id', depController.getDepartment);
+router.get('/:id',authorize, depController.getDepartment);
 
 // POST => /departments
-router.post('/', validate(postDepartmentBodySchema), depController.postDepartment);
+router.post('/',authorize, validate(postDepartmentBodySchema), depController.postDepartment);
 
 // PUT => /departments/id
-router.put('/:id', validate(editDepartmentBodySchema), depController.editDepartment);
+router.put('/:id',authorize, validate(editDepartmentBodySchema), depController.editDepartment);
 
 // DELETE => /departments/id
 router.delete('/:id', depController.deleteDepartment);
